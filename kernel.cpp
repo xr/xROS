@@ -2,16 +2,44 @@
 #include "gdt.h"
 
 void printf(string str) {
-		int8_t* VideoMemory = (int8_t*) 0xb8000;
-		int srcIndex = 0;
-		int desIndex = 0;
-		while (str[srcIndex] != '\0') {
-			VideoMemory[desIndex++] = str[srcIndex++]; // text
-			VideoMemory[desIndex++] = 0x02; // color manipulation VGA-compatible_text_mode
+		static int16_t* VideoMemory = (int16_t*) 0xb8000;
+		static uint8_t x = 0, y = 0;
+
+		for(int i = 0; str[i] != '\0'; ++i) {
+
+			switch (str[i]) {
+				case '\n':
+					y++;
+					x=0;
+					break;
+				default:
+					VideoMemory[80 * y + x] = (VideoMemory[80 * y + x] & 0xFF00) | str[i];
+					x++;
+			}
+
+			// reach the end of one line
+			if (x >= 80) {
+				y++;
+				x=0;
+			}
+
+			// reach the bottom of the page, clean the screen
+			if (y >= 25) {
+				for (y = 0; y < 25; y++) {
+					for (x = 0; x < 80; x++) {
+						VideoMemory[80 * y + x] = (VideoMemory[80 * y + x] & 0xFF00) | ' ';
+					}
+				}
+
+				x = 0;
+				y = 0;
+			}
+
 		}
 }
 
 extern "C" void kernelMain(void * multibootStructure, uint32_t magicNumber) {
+	printf("Hello world from xr!\n");
 	printf("Hello world from xr!");
 
 	GlobalDescriptorTable gdt;
