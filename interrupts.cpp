@@ -5,6 +5,8 @@ void printf(const char* str);
 //http://en.cppreference.com/w/cpp/language/static
 InterruptManager::GateDescriptor InterruptManager::interruptDescriptorTable[256];
 
+InterruptManager* InterruptManager::ActiveInterruptManager = 0;
+
 // about (*handler)() introduction, ref: https://stackoverflow.com/a/6893288/3043579
 void InterruptManager::SetInterruptDescriptorTableEntry(
   uint8_t interruptNumber,
@@ -68,11 +70,41 @@ InterruptManager::~InterruptManager() {
 };
 
 void InterruptManager::Activate() {
+  if (ActiveInterruptManager != 0) {
+    ActiveInterruptManager->Deactivate();
+  }
+  ActiveInterruptManager = this;
   asm("sti");
 }
 
+void InterruptManager::Deactivate() {
+  if (ActiveInterruptManager == this) {
+    ActiveInterruptManager = 0;
+    asm("cli");
+  }
+}
+
 uint32_t InterruptManager::handleInterrupt(uint8_t interruptNumber, uint32_t esp) {
-  printf("Interrupt\n");
-  printf("Interrupt2");
+  // if (ActiveInterruptManager != 0) {
+  //   return ActiveInterruptManager->DohandleInterrupt(interruptNumber, esp);
+  // }
+  // return esp;
+  printf("Interrupt...");
+  printf("Interrupt...");
+  return esp;
+}
+
+uint32_t InterruptManager::DohandleInterrupt(uint8_t interruptNumber, uint32_t esp) {
+  printf("Interrupt...");
+  printf("Interrupt...");
+
+  // if (0x20 <= interruptNumber && interruptNumber < 0x30) {
+  //   picMasterCommand.Write(0x20);
+  //
+  //   if (0x28  <= interruptNumber) {
+  //     picSlaveCommand.Write(0x20);
+  //   }
+  // }
+  //picMasterCommand.Write(0x20);
   return esp;
 }
