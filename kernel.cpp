@@ -1,6 +1,7 @@
 #include "types.h"
 #include "gdt.h"
 #include "interrupts.h"
+#include "keyboard.h"
 
 void printf(string str) {
 		static int16_t* VideoMemory = (int16_t*) 0xb8000;
@@ -40,11 +41,11 @@ void printf(string str) {
 }
 
 extern "C" void kernelMain(void * multibootStructure, uint32_t magicNumber) {
-	printf("Hello world from xr!\n");
-	printf("Hello world from xr!");
+	printf("Kernel start!\n");
 
 	GlobalDescriptorTable gdt;
 	InterruptManager interrupts(&gdt);
+	KeyboardDriver keyboard(&interrupts);
 
 
 	interrupts.Activate();
