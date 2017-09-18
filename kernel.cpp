@@ -2,9 +2,10 @@
 #include "gdt.h"
 #include "interrupts.h"
 #include "keyboard.h"
+#include "mouse.h"
 
 void printf(string str) {
-		static int16_t* VideoMemory = (int16_t*) 0xb8000;
+		static uint16_t* VideoMemory = (uint16_t*) 0xb8000;
 		static uint8_t x = 0, y = 0;
 
 		for(int i = 0; str[i] != '\0'; ++i) {
@@ -46,6 +47,7 @@ extern "C" void kernelMain(void * multibootStructure, uint32_t magicNumber) {
 	GlobalDescriptorTable gdt;
 	InterruptManager interrupts(&gdt);
 	KeyboardDriver keyboard(&interrupts);
+	MouseDriver mouse(&interrupts);
 
 
 	interrupts.Activate();
