@@ -1,4 +1,4 @@
-## xROS
+## xrOS
 
 ### intro
 writing my own operating system from scratch for learning purposes, targeting at i386 CPU architecture.
