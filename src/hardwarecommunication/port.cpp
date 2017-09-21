@@ -1,4 +1,7 @@
-#include "port.h"
+#include <hardwarecommunication/port.h>
+
+using namespace xros::common;
+using namespace xros::hardwarecommunication;
 
 Port::Port(uint16_t portnumber) {
   this->portnumber = portnumber;

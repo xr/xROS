@@ -1,4 +1,9 @@
-#include "keyboard.h"
+#include <common/types.h>
+#include <drivers/keyboard.h>
+
+using namespace xros::common;
+using namespace xros::drivers;
+using namespace xros::hardwarecommunication;
 
 KeyboardEventHandler::KeyboardEventHandler() {
 

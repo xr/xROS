@@ -1,4 +1,7 @@
-#include "interrupts.h"
+#include <hardwarecommunication/interrupts.h>
+
+using namespace xros::common;
+using namespace xros::hardwarecommunication;
 
 void printf(const char* str);
 void printfHex(uint8_t);

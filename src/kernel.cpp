@@ -1,9 +1,14 @@
-#include "types.h"
-#include "gdt.h"
-#include "interrupts.h"
-#include "driver.h"
-#include "keyboard.h"
-#include "mouse.h"
+#include <common/types.h>
+#include <gdt.h>
+#include <hardwarecommunication/interrupts.h>
+#include <drivers/driver.h>
+#include <drivers/keyboard.h>
+#include <drivers/mouse.h>
+
+using namespace xros;
+using namespace xros::common;
+using namespace xros::drivers;
+using namespace xros::hardwarecommunication;
 
 void printf(string str) {
 		static uint16_t* VideoMemory = (uint16_t*) 0xb8000;
