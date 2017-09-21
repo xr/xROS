@@ -19,6 +19,8 @@ class DriverManager {
   public:
     DriverManager();
     void AddDriver(Driver*);
+
+    void ActivateAll();
 };
 
 #endif
