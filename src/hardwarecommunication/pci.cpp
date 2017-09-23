@@ -29,7 +29,7 @@ uint32_t PCIController::Read(uint16_t bus, uint16_t device, uint16_t function, u
 
   commandPort.Write(id);
   uint32_t result = dataPort.Read();
-  return result >> ((8 * registeroffset % 4));
+  return result >> (8 * (registeroffset % 4));
 }
 
 void PCIController::Write(uint16_t bus, uint16_t device, uint16_t function, uint32_t registeroffset, uint32_t value) {
