@@ -9,6 +9,19 @@
 namespace xros {
   namespace hardwarecommunication {
 
+    enum BaseAddressRegisterType {
+      MemoryMapping = 0,
+      InputOutput = 1
+    };
+
+    class BaseAddressRegister {
+      public:
+        bool prefetchable;
+        xros::common::uint8_t* address;
+        xros::common::uint32_t size;
+        BaseAddressRegisterType type;
+    };
+
     class PCIDeviceDescriptor {
       public:
         xros::common::uint32_t portBase;
@@ -45,9 +58,11 @@ namespace xros {
 
         bool DeviceHasFunctions(xros::common::uint16_t bus, xros::common::uint16_t device);
 
-        void SelectDrivers(xros::drivers::DriverManager* driverManager);
+        void SelectDrivers(xros::drivers::DriverManager* driverManager, xros::hardwarecommunication::InterruptManager* interrupts);
 
+        xros::drivers::Driver* GetDriver(PCIDeviceDescriptor, xros::hardwarecommunication::InterruptManager* interrupts);
         PCIDeviceDescriptor GetDeviceDescriptor(xros::common::uint16_t bus, xros::common::uint16_t device, xros::common::uint16_t function);
+        BaseAddressRegister GetBaseAddressRegister(xros::common::uint16_t bus, xros::common::uint16_t device, xros::common::uint16_t function, xros::common::uint16_t bar);
     };
   }
 }
